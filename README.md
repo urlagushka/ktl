@@ -10,7 +10,7 @@ kochou template library
 
 ```cpp
 ktl::features sysft = {...};
-ktl::array< ktl::vec3, 4096 > colors;
+ktl::array< ktl::vec3, 4096 > colors(sysft);
 ```
 #### DATA ACCESS (DATA SIZE)
 #### SIMD ACCESS (SIMD SIZE)
