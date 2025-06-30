@@ -83,7 +83,17 @@ ktl::array< DATA, SIZE >::array(features m_features):
   __memory(nullptr),
   __mapped(nullptr)
 {
-  // init
+  __size_bytes = (SIZE % page_size == 0) ? SIZE : (SIZE / page_size + 1) * page_size;
+  __size_elems = __size_bytes / sizeof(DATA);
+
+  __data_align = alignof(DATA);
+  __simd_align = m_features.alignment;
+  __page_align = page_size;
+
+  __cache_line = m_features.cacheline;
+  __simd__size = m_features.packet;
+  __page__size = page_size;
+  __chunk_size = (__cache_line % sizeof(DATA) == 0) ? __cache_line : sizeof(DATA);
 }
 
 template< ktl::aligned_struct DATA, unsigned int SIZE >
