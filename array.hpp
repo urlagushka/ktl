@@ -5,12 +5,14 @@
 
 #include "features.hpp"
 
-/*
-using mmap for allocate
-*/
-
 namespace ktl
 {
+  enum class error
+  {
+    NON_VALID = -1,
+    BAD_ALLOC = -2
+  };
+
   template< typename T >
   concept aligned_struct = (alignof(T) != 0) && ((alignof(T) & (alignof(T) - 1)) == 0);
 
@@ -57,8 +59,6 @@ namespace ktl
       size_t __page__size;
       size_t __chunk_size;
 
-      bool __flags[__size_elems];
-
       void * __memory;
       DATA * __mapped;
   };
@@ -77,8 +77,6 @@ ktl::array< DATA, SIZE >::array(features m_features):
   __simd__size(0),
   __page__size(0),
   __chunk_size(0),
-
-  __flags({}),
 
   __memory(nullptr),
   __mapped(nullptr)
@@ -102,23 +100,33 @@ ktl::array< DATA, SIZE >::allocate(DATA && rhs)
 {
   if (__memory == nullptr)
   {
-    // allocate full memory AND map memory
-    if (/* failed to allocate */)
+    #if defined(__APPLE__) || defined(__linux__)
+    __memory = mmap(
+      nullptr,
+      PROT_READ | PROT_WRITE,
+      MAP_SHARED | MAP_ANONYMOUS,
+      0, 0
+    );
+
+    if (__memory == MAP_FAILED)
     {
-      return -1;
+      return error::BAD_ALLOC;
     }
+    #endif
+
+    __mapped = reinterpret_cast< DATA * >(__memory);
   }
 
   for (size_t i = 0; i < __size_elems; ++i)
   {
-    if (!__flags[i])
+    if (__mapped[i] == nullptr)
     {
-      // place DATA here
+      __mapped[i] = std::move(rhs);
       return i;
     }
   }
 
-  return -1;
+  return error::NON_VALID;
 }
 
 #endif

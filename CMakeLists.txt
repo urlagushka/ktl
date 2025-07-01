@@ -7,7 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SOURCES
   main.cpp
-  vector.cpp
+  features.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
