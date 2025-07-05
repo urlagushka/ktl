@@ -1,6 +1,8 @@
 #ifndef KTL_FEATURES_HPP
 #define KTL_FEATURES_HPP
 
+#include <unistd.h>
+
 #include <cstddef>
 
 namespace ktl

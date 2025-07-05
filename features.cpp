@@ -1,5 +1,6 @@
 #include "features.hpp"
 
+/*
 #if defined(__APPLE__)
 #include <sys/sysctl.h>
 #include <cstring>
@@ -40,6 +41,7 @@ ktl::get_system_features()
   };
 }
 #endif
+*/
 
 #if defined(__linux__)
 ktl::system_ft

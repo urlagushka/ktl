@@ -2,6 +2,7 @@
 #define KTL_ARRAY_HPP
 
 #include <cstdint>
+#include <sys/mman.h>
 
 #include "features.hpp"
 
@@ -109,6 +110,7 @@ ktl::array< DATA, SIZE >::allocate(DATA && rhs)
     #if defined(__APPLE__) || defined(__linux__)
     __memory = mmap(
       nullptr,
+      __size_bytes,
       PROT_READ | PROT_WRITE,
       MAP_SHARED | MAP_ANONYMOUS,
       0, 0
@@ -116,7 +118,7 @@ ktl::array< DATA, SIZE >::allocate(DATA && rhs)
 
     if (__memory == MAP_FAILED)
     {
-      return error::BAD_ALLOC;
+      return static_cast< int >(error::BAD_ALLOC);
     }
     #endif
 
@@ -132,7 +134,7 @@ ktl::array< DATA, SIZE >::allocate(DATA && rhs)
     }
   }
 
-  return error::NON_VALID;
+  return static_cast< int >(error::NON_VALID);
 }
 
 #endif

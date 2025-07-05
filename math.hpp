@@ -1,51 +1,52 @@
 #ifndef KTL_MATH_HPP
 #define KTL_MATH_HPP
 
-#if defined(__APPLE__)
-#include <arm_neon.h>
-#endif
-
-#if defined(__linux__) || defined(__WIN32)
-#include <immintrin.h>
-#endif
-
-/*
-
-requires NEON/AVX??
-
-*/
+#include <cstddef>
+#include "system.hpp"
 
 namespace ktl
 {
-  struct alignas(8) vec2
+  struct alignas(8) vec2f
   {
-    float x, y;
+    union
+    {
+      float x, y;
+      float data[2];
+
+      KTL_FLOAT2_T simd;
+    };
   };
 
-  struct alignas(16) vec3
+  struct alignas(16) vec3f
   {
-    float x, y, z;
-    float _padding;
+    union
+    {
+      float x, y, z, _padding;
+      float data[4];
+
+      KTL_FLOAT4_T simd;
+    };
   };
 
   struct alignas(16) vec4f
   {
+    vec4f();
+    vec4f(float m_x, float m_y, float m_z, float m_w);
+
     union
     {
       float x, y, z, w;
       float data[4];
 
-      #if defined(__AVX__)
-      __m128 avx;
-
-      #elif defined(__ARM_NEON)
-      float32x4_t neon;
-
-      #else
-      #error "update your pc (please)"
-      #endif
+      KTL_FLOAT4_T simd;
     };
   };
+
+  void vsum(const vec4f & lhs, const vec4f & rhs, vec4f & res);
+  void vmul(const vec4f & lhs, const vec4f & rhs, vec4f & res);
+
+  void ssum(const vec4f & lhs, float rhs, vec4f & res);
+  void smul(const vec4f & lhs, float rhs, vec4f & res);  
 }
 
 #endif

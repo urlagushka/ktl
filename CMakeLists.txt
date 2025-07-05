@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(SOURCES
   main.cpp
   features.cpp
+  math.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
