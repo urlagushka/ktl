@@ -5,12 +5,23 @@
 
 namespace ktl
 {
-  static const size_t page_size = sysconf(_SC_PAGESIZE);
+  static const long page_size = sysconf(_SC_PAGESIZE);
 
   enum class simd_t
   {
-    /* X86 */ SSE, AVX, AVX512,
+    /* X86 */ SSE,
+              SSE2,
+              SSE3,
+              SSSE3,
+              SSE4_1,
+              SSE4_2,
+              AVX,
+              AVX2,
+              AVX512,
+
     /* ARM */ NEON,
+              SVE,
+
     UNKNOWN
   };
 

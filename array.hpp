@@ -9,8 +9,10 @@ namespace ktl
 {
   enum class error
   {
+    FINE = -100,
     NON_VALID = -1,
-    BAD_ALLOC = -2
+    BAD_ALLOC = -2,
+    NO_FREE_MEMORY = -3
   };
 
   template< typename T >
@@ -61,6 +63,8 @@ namespace ktl
 
       void * __memory;
       DATA * __mapped;
+
+      error __error;
   };
 }
 
@@ -79,7 +83,9 @@ ktl::array< DATA, SIZE >::array(features m_features):
   __chunk_size(0),
 
   __memory(nullptr),
-  __mapped(nullptr)
+  __mapped(nullptr),
+
+  __error(error::FINE)
 {
   __size_bytes = (SIZE % page_size == 0) ? SIZE : (SIZE / page_size + 1) * page_size;
   __size_elems = __size_bytes / sizeof(DATA);
