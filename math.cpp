@@ -42,3 +42,9 @@ ktl::math::lenght4(const vec4f * rhs, size_t newt)
 
   return ktl_mul(va, inv_sqrt);
 }
+
+void
+ktl::math::add_first_write(vec4f & lhs, const vec4f & rhs)
+{
+  lhs.simd = ktl_add(lhs.simd, rhs.simd);
+}

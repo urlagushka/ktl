@@ -29,6 +29,8 @@ namespace ktl::math
   };
 
   vec4f lenght4(const vec4f * rhs, size_t newt = 1);
+
+  void add_first_write(vec4f & lhs, const vec4f & rhs);
 }
 
 #endif

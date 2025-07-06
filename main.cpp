@@ -16,6 +16,10 @@ int main()
   ktl::math::vec4f la = ktl::math::lenght4(va);
 
   std::cout << std::format("{}, {}, {}, {}\n", la.data[0], la.data[1], la.data[2], la.data[3]);
+
+  ktl::math::add_first_write(va[0], va[1]);
+
+  std::cout << std::format("{}, {}, {}, {}\n", va[0].data[0], va[0].data[1], va[0].data[2], va[0].data[3]);
   // const ktl::features sysft = ktl::get_system_features();
-  // ktl::array< ktl::vec3, 1000 > colors(sysft);
+  // ktl::array< ktl::vec3, 1000 > colors(sysft);m
 }
