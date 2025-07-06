@@ -4,44 +4,27 @@
 #if defined(__AVX__)
   #include <immintrin.h>
 
-  using   KTL_FLOAT4X4_T = __mm128[4];
-  using   KTL_FLOAT4X3_T = __mm128[3];
-  using   KTL_FLOAT4X2_T = __mm128[2];
+  using ktl_float4_t = __mm128;
+  using ktl_float2_t = __mm64;
 
-  using   KTL_FLOAT2X4_T = __mm64[3];
-  using   KTL_FLOAT2X3_T = __mm64[3];
-  using   KTL_FLOAT2X2_T = __mm64[2];
+  inline void ktl_add(const ktl_float4_t & lhs, const ktl_float4_t & rhs, ktl_float4_t & res) { res = _mm_add_ps(lhs, rhs); }
+  inline void ktl_add(const ktl_float2_t & lhs, const ktl_float2_t & rhs, ktl_float2_t & res) { res = _mm_add_ps(lhs, rhs); }
 
-  using   KTL_FLOAT4_T = __mm128;
-  using   KTL_FLOAT2_T = __mm64;
-
-  #define KTL_MATRIX_ACCESS(m, i) (m[i]);
-
-  #define KTL_ADD      = ;
-  #define KTL_MUL      = ;
-  #define KTL_READ     = ;
-  #define KTL_WRITE    = ;
+  inline void ktl_mul(const ktl_float4_t & lhs, const ktl_float4_t & rhs, ktl_float4_t & res) { res = _mm_mul_ps(lhs, rhs); }
+  inline void ktl_mul(const ktl_float2_t & lhs, const ktl_float2_t & rhs, ktl_float2_t & res) { res = _mm_mul_ps(lhs, rhs); }
 
 #elif defined(__ARM_NEON)
   #include <arm_neon.h>
 
-  using   KTL_FLOAT4X4_T = float32x4x4_t;
-  using   KTL_FLOAT4X3_T = float32x4x3_t;
-  using   KTL_FLOAT4X2_T = float32x4x2_t;
+  using ktl_float4_t = float32x4_t;
+  using ktl_float2_t = float32x2_t;
 
-  using   KTL_FLOAT2X4_T = float32x2x4_t;
-  using   KTL_FLOAT2X3_T = float32x2x3_t;
-  using   KTL_FLOAT2X2_T = float32x2x2_t;
+  inline void ktl_add(const ktl_float4_t & lhs, const ktl_float4_t & rhs, ktl_float4_t & res) { res = vaddq_f32(lhs, rhs); }
+  inline void ktl_add(const ktl_float2_t & lhs, const ktl_float2_t & rhs, ktl_float2_t & res) { res = vadd_f32 (lhs, rhs); }
 
-  using   KTL_FLOAT4_T = float32x4_t;
-  using   KTL_FLOAT2_T = float32x2_t;
+  inline void ktl_mul(const ktl_float4_t & lhs, const ktl_float4_t & rhs, ktl_float4_t & res) { res = vmulq_f32(lhs, rhs); }
+  inline void ktl_mul(const ktl_float2_t & lhs, const ktl_float2_t & rhs, ktl_float2_t & res) { res = vmul_f32 (lhs, rhs); }
 
-  #define KTL_MATRIX_ACCESS(m, i) (m.val[i]);
-
-  #define KTL_ADD      = ;
-  #define KTL_MUL      = ;
-  #define KTL_READ     = ;
-  #define KTL_WRITE    = ;
 #else
   #error "update your pc (please)"
 #endif
