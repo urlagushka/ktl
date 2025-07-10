@@ -6,31 +6,15 @@
 
 namespace ktl::math
 {
-  struct alignas(8) vec2f
-  {
-    union
-    {
-      float data[2];
-      ktl_float2_t simd;
-    };
-  };
-
-  struct alignas(16) vec4f
-  {
-    vec4f();
-    vec4f(float x, float y, float z, float w);
-    vec4f(ktl_float4_t rhs);
-
-    union
-    {
-      float data[4];
-      ktl_float4_t simd;
-    };
-  };
+  using vec2f  = ktl_float2_t;
+  using vec2f2 = ktl_float4_t;
+  using vec4f  = ktl_float4_t;
 
   vec4f lenght4(const vec4f * rhs, size_t newt = 1);
 
   void add_first_write(vec4f & lhs, const vec4f & rhs);
+  vec4f add_returnable(const vec4f & lhs, const vec4f & rhs);
+  void mul_scalar(vec4f & rhs, float k);
 }
 
 #endif
